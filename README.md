@@ -1,9 +1,10 @@
-Http APIs
+Http APIs   
 1. 地理位置报告接口，返回所有玩家信息和豆子信息
+
 URL: /bean/reportLocation
 Params: id=123&longitude=117.01&latitude=34.1
 
-Return:
+Return: 
 {
     "errno": 0,
      "errmsg": "",
