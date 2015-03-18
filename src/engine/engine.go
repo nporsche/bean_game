@@ -3,7 +3,7 @@ package engine
 import (
 	"config"
 	"fmt"
-	"logger"
+	"github.com/nporsche/np-golang-logger"
 	"net/http"
 	"runtime/debug"
 )
