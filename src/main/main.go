@@ -18,7 +18,8 @@ func main() {
 	runtime.GOMAXPROCS(config.This.Processors)
 
 	handlers := map[string]http.HandlerFunc{
-		"/bean/reportLocation/": handler.ReportLocation,
+		"/player/report":   handler.PlayerReport,
+		"/bean/manipulate": handler.BeanManipulate,
 	}
 
 	engine.Run(handlers)

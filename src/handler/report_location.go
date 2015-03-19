@@ -12,18 +12,16 @@ import "strconv"
 import "runtime/debug"
 
 //import "io/ioutil"
-type reportLocationResponse struct {
-	ErrNo   int            `json:"errno"`
-	ErrMsg  string         `json:"errmsg"`
-	Players []model.Player `json:"players"`
-	Beans   []model.Bean   `json:"beans"`
+type playerReportResponse struct {
+	ErrNo   int             `json:"errno"`
+	ErrMsg  string          `json:"errmsg"`
+	Players []*model.Player `json:"players"`
+	Beans   []*model.Bean   `json:"beans"`
 }
 
-func ReportLocation(rw http.ResponseWriter, req *http.Request) {
+func PlayerReport(rw http.ResponseWriter, req *http.Request) {
 	errNo := 0
 	errMsg := ""
-	players := []model.Player{}
-	beans := []model.Bean{}
 	startTick := time.Now()
 
 	session := util.Session()
@@ -40,7 +38,7 @@ func ReportLocation(rw http.ResponseWriter, req *http.Request) {
 				logger.Errorf("session=[%s] unexpected exception=[%v] stack=[%s]", session, x, string(debug.Stack()))
 			}
 		}
-		response := reportLocationResponse{errNo, errMsg, players, beans}
+		response := playerReportResponse{errNo, errMsg, storage.Ele.Players, storage.Ele.Beans}
 
 		encoder := json.NewEncoder(rw)
 		encoder.Encode(response)
@@ -57,13 +55,12 @@ func ReportLocation(rw http.ResponseWriter, req *http.Request) {
 	}()
 
 	id, err1 := strconv.ParseUint(req.FormValue("id"), 10, 64)
-	longitude, err2 := strconv.ParseFloat(req.FormValue("longitude"), 64)
-	latitude, err3 := strconv.ParseFloat(req.FormValue("latitude"), 64)
+	longitude, err2 := strconv.ParseInt(req.FormValue("longitude"), 10, 64)
+	latitude, err3 := strconv.ParseInt(req.FormValue("latitude"), 10, 64)
 
 	if err1 == nil && err2 == nil && err3 == nil {
 		storage.Ele.PlayerReport(id, longitude, latitude)
-		players = storage.Ele.Players
-		beans = storage.Ele.Beans
+
 	} else {
 		panic(def.ParamException)
 	}
