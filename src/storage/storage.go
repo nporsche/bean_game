@@ -50,3 +50,11 @@ func (this *Elements) BeanManipulate(id uint64, state uint8, longitude int64, la
 
 	this.Beans = append(this.Beans, bean)
 }
+
+func (this *Elements) CleanPlayers() {
+	this.Players = make([]*model.Player, 0)
+}
+
+func (this *Elements) CleanBeans() {
+	Ele.Beans = make([]*model.Bean, 0)
+}

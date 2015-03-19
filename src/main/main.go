@@ -20,6 +20,7 @@ func main() {
 	handlers := map[string]http.HandlerFunc{
 		"/player/report":   handler.PlayerReport,
 		"/bean/manipulate": handler.BeanManipulate,
+		"/clean":           handler.Clean,
 	}
 
 	engine.Run(handlers)
