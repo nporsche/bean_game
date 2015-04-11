@@ -5,7 +5,7 @@ all: dep
 
 dep:
 	go get github.com/nporsche/goyaml
-	go get github.com/nporsche/np-golang-logger
+	go get github.com/nporsche/np-golang-logging
 
 clean:
 	-rm -rf ./bin

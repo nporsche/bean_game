@@ -1,6 +1,5 @@
 package handler
 
-import "github.com/nporsche/np-golang-logger"
 import "net/http"
 import "storage"
 import "time"
@@ -35,7 +34,7 @@ func PlayerReport(rw http.ResponseWriter, req *http.Request) {
 			default:
 				errMsg = def.UnExpectedErrMsg
 				errNo = def.UnExpectedErrNo
-				logger.Errorf("session=[%s] unexpected exception=[%v] stack=[%s]", session, x, string(debug.Stack()))
+				logger.Error("session=[%s] unexpected exception=[%v] stack=[%s]", session, x, string(debug.Stack()))
 			}
 		}
 		response := playerReportResponse{errNo, errMsg, storage.Ele.Players, storage.Ele.Beans}
@@ -44,7 +43,7 @@ func PlayerReport(rw http.ResponseWriter, req *http.Request) {
 		encoder.Encode(response)
 
 		endTick := time.Now()
-		logger.Infof("Access ReportLocation session=[%s] errno=[%d] errmsg=[%s] duration=[%d] id=[%s] longitude=[%s] latitude=[%s]",
+		logger.Info("Access ReportLocation session=[%s] errno=[%d] errmsg=[%s] duration=[%d] id=[%s] longitude=[%s] latitude=[%s]",
 			session,
 			errNo,
 			errMsg,

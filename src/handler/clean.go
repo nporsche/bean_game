@@ -1,6 +1,5 @@
 package handler
 
-import "github.com/nporsche/np-golang-logger"
 import "net/http"
 import "storage"
 import "time"
@@ -32,7 +31,7 @@ func Clean(rw http.ResponseWriter, req *http.Request) {
 			default:
 				errMsg = def.UnExpectedErrMsg
 				errNo = def.UnExpectedErrNo
-				logger.Errorf("session=[%s] unexpected exception=[%v] stack=[%s]", session, x, string(debug.Stack()))
+				logger.Error("session=[%s] unexpected exception=[%v] stack=[%s]", session, x, string(debug.Stack()))
 			}
 		}
 		response := cleanResponse{errNo, errMsg}
@@ -41,7 +40,7 @@ func Clean(rw http.ResponseWriter, req *http.Request) {
 		encoder.Encode(response)
 
 		endTick := time.Now()
-		logger.Infof("Access Clean session=[%s] errno=[%d] errmsg=[%s] duration=[%d] type=[%s]",
+		logger.Info("Access Clean session=[%s] errno=[%d] errmsg=[%s] duration=[%d] type=[%s]",
 			session,
 			errNo,
 			errMsg,

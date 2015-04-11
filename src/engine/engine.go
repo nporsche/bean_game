@@ -3,10 +3,12 @@ package engine
 import (
 	"config"
 	"fmt"
-	"github.com/nporsche/np-golang-logger"
+	"github.com/nporsche/np-golang-logging"
 	"net/http"
 	"runtime/debug"
 )
+
+var logger = logging.MustGetLogger("engine")
 
 func Run(handlers map[string]http.HandlerFunc) {
 	for url, handler := range handlers {
@@ -28,6 +30,6 @@ func safeHandler(url string, rHandler http.HandlerFunc) http.HandlerFunc {
 
 func faultRecovery() {
 	if x := recover(); x != nil {
-		logger.Errorf("Uncaught exception=[%v] stack=[%s]", x, string(debug.Stack()))
+		logger.Error("Uncaught exception=[%v] stack=[%s]", x, string(debug.Stack()))
 	}
 }

@@ -1,6 +1,6 @@
 package handler
 
-import "github.com/nporsche/np-golang-logger"
+import "github.com/nporsche/np-golang-logging"
 import "net/http"
 import "storage"
 import "time"
@@ -10,6 +10,8 @@ import "encoding/json"
 import "def"
 import "strconv"
 import "runtime/debug"
+
+var logger = logging.MustGetLogger("handler")
 
 type beanManipulateResponse struct {
 	ErrNo   int             `json:"errno"`
@@ -34,7 +36,7 @@ func BeanManipulate(rw http.ResponseWriter, req *http.Request) {
 			default:
 				errMsg = def.UnExpectedErrMsg
 				errNo = def.UnExpectedErrNo
-				logger.Errorf("session=[%s] unexpected exception=[%v] stack=[%s]", session, x, string(debug.Stack()))
+				logger.Error("session=[%s] unexpected exception=[%v] stack=[%s]", session, x, string(debug.Stack()))
 			}
 		}
 		response := beanManipulateResponse{errNo, errMsg, storage.Ele.Players, storage.Ele.Beans}
@@ -43,7 +45,7 @@ func BeanManipulate(rw http.ResponseWriter, req *http.Request) {
 		encoder.Encode(response)
 
 		endTick := time.Now()
-		logger.Infof("Access BeanManipulate session=[%s] errno=[%d] errmsg=[%s] duration=[%d] id=[%s] state=[%s] longitude=[%s] latitude=[%s]",
+		logger.Info("Access BeanManipulate session=[%s] errno=[%d] errmsg=[%s] duration=[%d] id=[%s] state=[%s] longitude=[%s] latitude=[%s]",
 			session,
 			errNo,
 			errMsg,

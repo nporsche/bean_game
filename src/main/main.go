@@ -6,15 +6,28 @@ package main
 import (
 	"config"
 	"engine"
-	"github.com/nporsche/np-golang-logger"
+	"fmt"
+	"github.com/nporsche/np-golang-logging"
 	"handler"
+	"log/syslog"
 	"net/http"
+	"os"
 	"runtime"
 )
 
 func main() {
 	config.Init()
-	logger.Init("bean_game", config.This.Debug)
+	/* logger initiailization */
+	backend, err := logging.NewSyslogBackendPriority("bean_game", syslog.LOG_LOCAL3)
+	if err != nil {
+		fmt.Printf("logging init error=[%s]", err.Error())
+		os.Exit(1)
+	}
+	format := logging.MustStringFormatter(
+		"%{color}[%{module}.%{shortfunc}][%{level:.4s}]%{color:reset}%{message}",
+	)
+	logging.SetBackend(logging.NewBackendFormatter(backend, format))
+	/* end logger initiailization */
 	runtime.GOMAXPROCS(config.This.Processors)
 
 	handlers := map[string]http.HandlerFunc{
